@@ -4,7 +4,7 @@ import { View } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import { RN, Stripe, Other } from './src/screens'
+import { RN, Stripe } from './src/screens'
 import { StripeProvider } from '@stripe/stripe-react-native'
 import { COLORS, publishableKey } from './src/utils/constants'
 
@@ -51,23 +51,6 @@ const HomeStack = () => {
         }}
         name="Stripe"
         component={Stripe}
-      />
-      <Tab.Screen
-        options={{
-          tabBarIcon: () => (
-            <View
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                width: 24,
-                height: 24,
-                borderRadius: 12,
-                backgroundColor: COLORS.red,
-              }}
-            />
-          ),
-        }}
-        name="Other"
-        component={Other}
       />
     </Tab.Navigator>
   )
