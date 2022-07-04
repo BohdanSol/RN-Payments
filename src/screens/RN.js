@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text, StyleSheet, Platform } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import ApplePayButton from '../components/ApplePayButton'
 import GooglePayButton from '../components/GooglePayButton'
 import { COLORS } from '../utils/constants'
 
@@ -10,7 +11,11 @@ const RN = () => {
       <Text style={styles.headingText}>
         Implementation using separate packages for IOS/Android
       </Text>
-      {Platform.OS === 'ios' ? <></> : <GooglePayButton fullPrice={'20'} />}
+      {Platform.OS === 'ios' ? (
+        <ApplePayButton />
+      ) : (
+        <GooglePayButton fullPrice={'20'} />
+      )}
     </SafeAreaView>
   )
 }

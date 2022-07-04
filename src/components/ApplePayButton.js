@@ -1,53 +1,32 @@
 import { Alert, Pressable, StyleSheet, Text } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { GooglePay } from 'react-native-google-pay'
+import React from 'react'
+import ApplePay from 'react-native-apple-payment'
 import { COLORS } from '../utils/constants'
 
-const allowedCardNetworks = ['VISA', 'MASTERCARD']
-const allowedCardAuthMethods = ['PAN_ONLY', 'CRYPTOGRAM_3DS']
+const method = {
+  countryCode: 'UA',
+  currencyCode: 'USD',
+  supportedNetworks: ['Visa', 'MasterCard', 'AmEx'],
+  merchantIdentifier: 'merchant.com.example',
+}
 
-const ApplePayButton = ({ fullPrice }) => {
-  // Set the environment before the payment request
-  GooglePay.setEnvironment(GooglePay.ENVIRONMENT_TEST)
+const detail = {
+  total: {
+    label: 'Socks',
+    amount: 20,
+  },
+}
 
-  const requestData = {
-    cardPaymentMethod: {
-      tokenizationSpecification: {
-        type: 'PAYMENT_GATEWAY',
-        // stripe (see Example):
-        gateway: 'stripe',
-        gatewayMerchantId: '',
-        stripe: {
-          publishableKey: 'pk_test_TYooMQauvdEDq54NiTphI7jx',
-          version: '2018-11-08',
-        },
-        // other:
-        //   gateway: 'example',
-        //   gatewayMerchantId: 'exampleGatewayMerchantId',
-      },
-      allowedCardNetworks,
-      allowedCardAuthMethods,
-    },
-    transaction: {
-      totalPrice: '10',
-      totalPriceStatus: 'FINAL',
-      currencyCode: 'USD',
-    },
-    merchantName: 'Example Merchant',
-  }
-
-  const pay = () => {
-    // Check if Google Pay is available
-    GooglePay.isReadyToPay(allowedCardNetworks, allowedCardAuthMethods).then(
-      (ready) => {
-        if (ready) {
-          // Request payment token
-          GooglePay.requestPayment(requestData)
-            .then((token) => handleSuccess(token))
-            .catch((error) => handleError(error))
-        }
-      },
-    )
+const ApplePayButton = () => {
+  const pay = async () => {
+    const payment = new ApplePay(method, detail)
+    const canMakePayment = await payment.canMakePayments()
+    if (canMakePayment) {
+      await payment.initApplePay()
+      handleSuccess()
+    } else {
+      handleError({ message: 'Apple Pay is not available' })
+    }
   }
 
   const handleSuccess = (token) => {
@@ -60,7 +39,7 @@ const ApplePayButton = ({ fullPrice }) => {
 
   return (
     <Pressable onPress={pay} style={styles.googlePayBtn}>
-      <Text style={styles.googlePayBtnText}>{fullPrice}$ Google Pay</Text>
+      <Text style={styles.googlePayBtnText}>Apple Pay</Text>
     </Pressable>
   )
 }
