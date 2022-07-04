@@ -1,6 +1,7 @@
-import { Alert, StyleSheet } from 'react-native'
+import { Alert, Pressable, StyleSheet, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { GooglePayButton, useGooglePay } from '@stripe/stripe-react-native'
+import { COLORS } from '../utils/constants'
 
 const GooglePayStripeButton = ({ fullPrice }) => {
   const { isGooglePaySupported, initGooglePay, presentGooglePay, loading } =
@@ -82,12 +83,15 @@ const GooglePayStripeButton = ({ fullPrice }) => {
   }
 
   return (
-    <GooglePayButton
-      onPress={pay}
-      disabled={!initialized || loading}
-      style={styles.googlePayBtn}
-      type="pay"
-    />
+    <Pressable onPress={pay} style={styles.googlePayBtn}>
+      <Text style={styles.googlePayText}>Pay With Google Pay</Text>
+    </Pressable>
+    // <GooglePayButton
+    //   onPress={pay}
+    //   disabled={!initialized || loading}
+    //   style={styles.googlePayBtn}
+    //   type="pay"
+    // />
   )
 }
 
@@ -97,9 +101,12 @@ const styles = StyleSheet.create({
   googlePayBtn: {
     width: '100%',
     height: 48,
-    borderRadius: 0,
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000000',
+    backgroundColor: COLORS.blue,
+  },
+  googlePayText: {
+    color: COLORS.darkGray,
   },
 })
